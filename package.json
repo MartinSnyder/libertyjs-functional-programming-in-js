@@ -1,0 +1,21 @@
+{
+  "name": "libertyjs-functional-programming-in-js",
+  "version": "1.0.0",
+  "description": "LibertyJS 2017 Functional Programming in JavaScript Workshop Repository",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MartinSnyder/libertyjs-functional-programming-in-js.git"
+  },
+  "author": "Martin Snyder",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MartinSnyder/libertyjs-functional-programming-in-js/issues"
+  },
+  "homepage": "https://github.com/MartinSnyder/libertyjs-functional-programming-in-js#readme"
+}
