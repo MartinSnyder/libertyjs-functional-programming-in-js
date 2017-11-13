@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "LibertyJS 2017 Functional Programming in JavaScript Workshop Repository",
   "main": "index.js",
-  "dependencies": {},
+  "dependencies": {
+    "immutable-js": "^0.3.1-6"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "test"
