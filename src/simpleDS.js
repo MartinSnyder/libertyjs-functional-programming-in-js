@@ -1,5 +1,6 @@
 import { List } from 'immutable';
 import { IReadContext, IWriteContext, IDataStore } from "./interfaces";
+import { toPredicate} from "./conditions";
 
 export default class DataStore extends IDataStore {
     constructor() {
@@ -13,8 +14,8 @@ export default class DataStore extends IDataStore {
         const self = this;
 
         class ReadContext extends IReadContext {
-            retrieveWhere(query) {
-                return self.allRecords.toJS();
+            retrieveWhere(condition) {
+                return self.allRecords.filter(toPredicate(condition)).toJS();
             }
         }
 
@@ -25,19 +26,19 @@ export default class DataStore extends IDataStore {
         const self = this;
 
         class WriteContext extends IWriteContext {
-            retrieveWhere(query) {
-                return self.allRecords.toJS();
+            retrieveWhere(condition) {
+                return self.allRecords.filter(toPredicate(condition)).toJS();
             }
 
             create(record) {
                 self.allRecords = self.allRecords.push(record);
             }
 
-            updateWhere(query, obj) {
+            updateWhere(condition, obj) {
 
             }
 
-            deleteWhere(query) {
+            deleteWhere(condition) {
 
             }
         }

@@ -1,11 +1,11 @@
 export class IReadContext {
-    retrieveWhere(query) {}
+    retrieveWhere(condition) {}
 }
 
 export class IWriteContext extends IReadContext {
     create(obj) {}
-    updateWhere(query, obj) {}
-    deleteWhere(query) {}
+    updateWhere(condition, obj) {}
+    deleteWhere(condition) {}
 }
 
 export class IDataStore {
