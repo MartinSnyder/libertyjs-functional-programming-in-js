@@ -33,14 +33,6 @@ export default class DataStore extends IDataStore {
             create(record) {
                 self.allRecords = self.allRecords.push(record);
             }
-
-            updateWhere(condition, obj) {
-
-            }
-
-            deleteWhere(condition) {
-
-            }
         }
 
         return fWriter(new WriteContext());
