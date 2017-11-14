@@ -1,4 +1,1 @@
-import * as ImmutableJS from 'immutable-js';
-
-
-export const library = ImmutableJS;
+export { default as SimpleDataStore } from './simpleDS';
