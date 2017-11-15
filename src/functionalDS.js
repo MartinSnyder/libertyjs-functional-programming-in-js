@@ -1,11 +1,12 @@
 import { List } from 'immutable';
 import { IReadContext, IWriteContext, IDataStore } from './interfaces';
-import { toPredicate} from './conditions';
+import { toConstraintEnforcer} from './constraints';
+import ImmutableSnapshot from './immutableSnapshot';
 
 export default class DataStore extends IDataStore {
-    constructor() {
+    constructor(constraints) {
         super();
-        this.allRecords = new List();
+        this.currentSnaphot = new ImmutableSnapshot(new List(), (constraints || []).map(toConstraintEnforcer));
     }
 
     read(fReader) {
@@ -13,7 +14,7 @@ export default class DataStore extends IDataStore {
 
         class ReadContext extends IReadContext {
             retrieveWhere(condition) {
-                return self.allRecords.filter(toPredicate(condition)).toJS();
+                return self.currentSnaphot.retrieveWhere(condition);
             }
         }
 
@@ -25,11 +26,11 @@ export default class DataStore extends IDataStore {
 
         class WriteContext extends IWriteContext {
             retrieveWhere(condition) {
-                return self.allRecords.filter(toPredicate(condition)).toJS();
+                return self.currentSnaphot.retrieveWhere(condition);
             }
 
             createObject(record) {
-                self.allRecords = self.allRecords.push(record);
+                self.currentSnaphot = self.currentSnaphot.createObject(record);
             }
         }
 

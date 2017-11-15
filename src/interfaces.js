@@ -3,7 +3,7 @@ export class IReadContext {
 }
 
 export class IWriteContext extends IReadContext {
-    create(obj) {}
+    createObject(record) {}
 }
 
 export class IDataStore {

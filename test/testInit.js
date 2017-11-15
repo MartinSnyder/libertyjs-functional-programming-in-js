@@ -1,5 +1,5 @@
 import { assert, expect } from 'chai';
-import { SimpleDataStore, Conditions } from '../src/index';
+import { SimpleDataStore, FunctionalDataStore, Conditions } from '../src/index';
 
 describe('This Project', () => {
     it('Contains the SimpleDataStore class', () => assert(SimpleDataStore !== null));
@@ -11,26 +11,27 @@ describe('Conditions.toPredicate', () => {
     });
 });
 
-describe('SimpleDataStore', () => {
-    const ds = new SimpleDataStore();
-
+function testDataStore(dataStore) {
     it('Allows records to be added', () => {
-        ds.write(ctx => {
-            ctx.create({ id: 1});
-            ctx.create({ id: 2});
-            ctx.create({ id: 3});
+        dataStore.write(ctx => {
+            ctx.createObject({ id: 1});
+            ctx.createObject({ id: 2});
+            ctx.createObject({ id: 3});
         })
     });
 
     it('allows retrieval of all records', () => {
-        assert(ds.read(ctx => ctx.retrieveWhere()).length === 3);
+        assert(dataStore.read(ctx => ctx.retrieveWhere()).length === 3);
     });
 
     it('allows query for specific record', () => {
         const condition = new Conditions.Condition(Conditions.EQUALS, {attr: 'id', value: 2});
-        const matchingRecords = ds.read(ctx => ctx.retrieveWhere(condition));
+        const matchingRecords = dataStore.read(ctx => ctx.retrieveWhere(condition));
 
         assert(matchingRecords.length === 1);
         assert(matchingRecords[0].id === 2);
     });
-});
+}
+
+describe('SimpleDataStore', () => testDataStore(new SimpleDataStore()));
+describe('FunctionalDataStore', () => testDataStore(new FunctionalDataStore()));

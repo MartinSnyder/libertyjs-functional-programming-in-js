@@ -1,6 +1,6 @@
 // Condition types
-export const ALL = 'ALL'; // no data
-export const EQUALS = 'EQUALS'; // { attr: 'Attribute Name', value: 'Attribute Value' }
+export const ALL = 'All'; // no data
+export const EQUALS = 'Equals'; // { attr: 'Attribute Name', value: 'Attribute Value' }
 
 export class Condition {
     constructor(type, data) {
