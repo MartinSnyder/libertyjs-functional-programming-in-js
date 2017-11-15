@@ -81,6 +81,22 @@ describe('Constrained FunctionalDataStore', () => {
         expect(dataStore.read(ctx => ctx.retrieveWhere())).to.have.lengthOf(5);
     });
 
+    it('rolls back failed transactions', () => {
+        // If we hit the DataStore from the outside, it will still have 5 records because of the previous test
+        expect(dataStore.read(ctx => ctx.retrieveWhere())).to.have.lengthOf(5);
+
+        expect(() => {
+            dataStore.write(outerTransactionContext => {
+                outerTransactionContext.createObject({id: 6});
+                outerTransactionContext.createObject({id: 6});
+            });
+        }).to.throw(Error, 'Unique Constraint on attribute id violated by duplicate value 6');
+
+        // If we hit the DataStore from the outside, it will still have 5 records because of the previous test
+        expect(dataStore.read(ctx => ctx.retrieveWhere())).to.have.lengthOf(5);
+    });
+
+
     it('enforces constraints on transaction commit', () => {
         let committedFirstTransaction = false;
 
