@@ -25,7 +25,7 @@ class UniqueConstraintEnforcer extends IConstraintEnforcer {
     createObject(record) {
         const attrValue = record[this.constraintData.attr];
         if (this.uniqueValues.includes(attrValue)) {
-            throw new Error(`Unique Constraint on attribute ${constraintData.attr} violated by duplicate value ${attrValue}`);
+            throw new Error(`Unique Constraint on attribute ${this.constraintData.attr} violated by duplicate value ${attrValue}`);
         }
         else {
             return new UniqueConstraintEnforcer(this.constraintData, this.uniqueValues.add(attrValue));
