@@ -51,4 +51,53 @@ describe('Constrained FunctionalDataStore', () => {
             ctx.createObject({ id: 1});
         })).to.throw(Error, 'Unique Constraint on attribute id violated by duplicate value 1');
     });
+
+    it('isolates transactions', () => {
+        dataStore.write(outerTransactionContext => {
+            outerTransactionContext.createObject({id: 4});
+
+            // Retrieve the record we just added to the OUTER transaction
+            expect(outerTransactionContext.retrieveWhere()).to.have.lengthOf(4);
+
+            // Dirty trick - make a new top-level transaction before the first one has committed
+            dataStore.write(innerTransactionContext => {
+                // New INNER transaction where the OUTER transaction hasn't been committed yet
+                expect(innerTransactionContext.retrieveWhere()).to.have.lengthOf(3);
+
+                innerTransactionContext.createObject({id: 5});
+
+                // Now our INNER transaction will have 4 records also
+                expect(innerTransactionContext.retrieveWhere()).to.have.lengthOf(4);
+
+                // Our OUTER transaction still has 4 (and neither has been committed)
+                expect(outerTransactionContext.retrieveWhere()).to.have.lengthOf(4);
+            });
+
+            // If we hit the DataStore from the outside, it will now have 4 records because our INNER transaction was just committed
+            expect(dataStore.read(ctx => ctx.retrieveWhere())).to.have.lengthOf(4);
+        });
+
+        // If we hit the DataStore from the outside, it will now have 5 records because our OUTER transaction was just committed
+        expect(dataStore.read(ctx => ctx.retrieveWhere())).to.have.lengthOf(5);
+    });
+
+    it('enforces constraints on transaction commit', () => {
+        let committedFirstTransaction = false;
+
+        expect(() => {
+            dataStore.write(outerTransactionContext => {
+                outerTransactionContext.createObject({id: 6});
+
+                // Dirty trick - make a new top-level transaction before the first one has committed
+                dataStore.write(innerTransactionContext => {
+                    // This duplicate is ok because nothing has been committed yet
+                    innerTransactionContext.createObject({id: 6});
+                });
+
+                committedFirstTransaction = true;
+            });
+        }).to.throw(Error, 'Unique Constraint on attribute id violated by duplicate value 6');
+
+        assert(committedFirstTransaction);
+    });
 });

@@ -33,6 +33,6 @@ export default class DataStore extends IDataStore {
             }
         }
 
-        return fWriter(new WriteContext());
+        fWriter(new WriteContext());
     }
 }
