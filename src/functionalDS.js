@@ -13,16 +13,6 @@ class Operation {
     }
 }
 
-function applyOperation(operation, snapshot) {
-    switch (operation.type) {
-        case CREATE:
-            return snapshot.createObject(operation.data.record);
-
-        default:
-            throw new Error(`Invalid Operation Type: ${operation.type}`)
-    }
-}
-
 class TransactionContext extends IWriteContext {
     constructor(initialSnapshot) {
         super();
@@ -36,18 +26,11 @@ class TransactionContext extends IWriteContext {
     }
 
     createObject(record) {
-        const operation = new Operation(CREATE, { record: record });
-        this.currentSnapshot = applyOperation(operation, this.currentSnapshot);
-        this.operations.push(operation);
+        throw new Error('Implement this function as part of Exercise 4');
     }
 
     commitTo(otherSnapshot) {
-        let currentIterationSnapshot = otherSnapshot;
-        for (let i = 0; i < this.operations.length; i++) {
-            currentIterationSnapshot = applyOperation(this.operations[i], currentIterationSnapshot)
-        }
-
-        return currentIterationSnapshot;
+        throw new Error('Implement this function as part of Exercise 4');
     }
 }
 
@@ -55,7 +38,8 @@ export default class DataStore extends IDataStore {
     constructor(constraints) {
         super();
 
-        this.currentSnapshot = new ImmutableSnapshot(new List(), (constraints || []).map(toConstraintEnforcer));
+        // Enable this as part of Exercise 3
+        // this.currentSnapshot = new ImmutableSnapshot(new List(), (constraints || []).map(toConstraintEnforcer));
     }
 
     read(fReader) {
@@ -71,8 +55,19 @@ export default class DataStore extends IDataStore {
     }
 
     write(fWriter) {
-        const transaction = new TransactionContext(this.currentSnapshot);
-        fWriter(transaction);
-        this.currentSnapshot = transaction.commitTo(this.currentSnapshot);
+        const self = this;
+
+        // Implement this function as part of Exercise 4
+        class WriteContext extends IWriteContext {
+            retrieveWhere(condition) {
+                return self.currentSnaphot.retrieveWhere(condition);
+            }
+
+            createObject(record) {
+                self.currentSnaphot = self.currentSnaphot.createObject(record);
+            }
+        }
+
+        return fWriter(new WriteContext());
     }
 }

@@ -13,7 +13,7 @@ export default class DataStore extends IDataStore {
 
         class ReadContext extends IReadContext {
             retrieveWhere(condition) {
-                return self.allRecords.filter(toPredicate(condition)).toJS();
+                throw new Error('Implement this function as part of Exercise 2');
             }
         }
 
@@ -25,11 +25,11 @@ export default class DataStore extends IDataStore {
 
         class WriteContext extends IWriteContext {
             retrieveWhere(condition) {
-                return self.allRecords.filter(toPredicate(condition)).toJS();
+                throw new Error('Implement this function as part of Exercise 2');
             }
 
             createObject(record) {
-                self.allRecords = self.allRecords.push(record);
+                throw new Error('Implement this function as part of Exercise 2');
             }
         }
 

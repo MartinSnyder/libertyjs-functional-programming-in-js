@@ -9,24 +9,6 @@ export class Condition {
     }
 }
 
-function greedyPredicate(record) { return true; }
-
 export function toPredicate(condition) {
-    if (!condition) {
-        // Return a special predicate that accepts all records
-        return greedyPredicate;
-    } else {
-        switch (condition.type) {
-            case ALL:
-                return greedyPredicate;
-
-            case EQUALS:
-                return function(record) {
-                    return record[condition.data.attr] === condition.data.value;
-                };
-
-            default:
-                throw new Error(`Unknown condition type: ${condition.type}`);
-        }
-    }
+    throw new Error('Implement this function as part of Exercise 1');
 }
