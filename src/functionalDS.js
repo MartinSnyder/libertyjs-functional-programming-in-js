@@ -39,7 +39,7 @@ export default class DataStore extends IDataStore {
         super();
 
         // Enable this as part of Exercise 3
-        // this.currentSnapshot = new ImmutableSnapshot(new List(), (constraints || []).map(toConstraintEnforcer));
+        this.currentSnapshot = new ImmutableSnapshot(new List(), (constraints || []).map(toConstraintEnforcer));
     }
 
     read(fReader) {
@@ -60,11 +60,11 @@ export default class DataStore extends IDataStore {
         // Implement this function as part of Exercise 4
         class WriteContext extends IWriteContext {
             retrieveWhere(condition) {
-                return self.currentSnaphot.retrieveWhere(condition);
+                return self.currentSnapshot.retrieveWhere(condition);
             }
 
             createObject(record) {
-                self.currentSnaphot = self.currentSnaphot.createObject(record);
+                self.currentSnapshot = self.currentSnapshot.createObject(record);
             }
         }
 

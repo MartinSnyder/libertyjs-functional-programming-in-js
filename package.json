@@ -15,7 +15,7 @@
     "npm": "^5.5.1"
   },
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter spec --require babel-core/register"
+    "test": "./node_modules/.bin/mocha --reporter spec --require babel-core/register --watch"
   },
   "repository": {
     "type": "git",

@@ -18,11 +18,17 @@ class UniqueConstraintEnforcer extends IConstraintEnforcer {
     constructor(constraintData, uniqueValues) {
         super();
 
-        throw new Error('Implement this function as part of Exercise 3');
+        this.constraintData = constraintData;
+        this.uniqueValues = uniqueValues || new Set();
     }
 
     createObject(record) {
-        throw new Error('Implement this function as part of Exercise 3');
+        const newValue = record[this.constraintData.data.attr];
+
+        if (this.uniqueValues.includes(newValue))
+            throw new Error('Oh no!');
+
+        return new UniqueConstraintEnforcer(this.constraintData, this.uniqueValues.add(newValue));
     }
 }
 
